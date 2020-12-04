@@ -1,0 +1,27 @@
+{
+  "name": "crypto-arbitrage-bot",
+  "version": "0.0.1",
+  "description": "Crypto arbitrage bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyzeSolutions/crypto-arbitrage-bot.git"
+  },
+  "keywords": [
+    "crypto",
+    "ethereum",
+    "eth",
+    "bot",
+    "arbitrage",
+    "trading"
+  ],
+  "author": "Raupp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RyzeSolutions/crypto-arbitrage-bot/issues"
+  },
+  "homepage": "https://github.com/RyzeSolutions/crypto-arbitrage-bot#readme"
+}
