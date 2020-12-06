@@ -11,7 +11,7 @@ module.exports = class Uniswap {
         const token = tokens[ticker]
 
         if (token)
-            return new Token(ChainId[process.env.CHAIN_ID], token.address, token.decimals)
+            return new Token(ChainId.MAINNET, token.address, token.decimals)
 
         throw Error(`Token ${ ticker } not found`)
     }
