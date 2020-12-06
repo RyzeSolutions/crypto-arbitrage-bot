@@ -6,18 +6,27 @@
     const { providers } = require('ethers')
     const Uniswap = require('./src/exchanges/uniswap')
 
+    // Instances
     const provider = new providers.InfuraProvider('homestead', {
         projectId: process.env.INFURA_PROJECT_ID,
         projectSecret: process.env.INFURA_PROJECT_SECRET,
     })
     const uniswap = new Uniswap(provider)
+
+    // Functions
     const logPrice = (message, price) => console.log(message, price.toSignificant(10))
 
     // Get prices
     perf.start()
 
-    const wethDai = uniswap.getPrice('dai', 'weth')
-    const wbtcDai = uniswap.getPrice('dai', 'wbtc')
+    const wethDai = uniswap.getPrice({
+        from: 'weth',
+        to: 'dai',
+    })
+    const wbtcDai = uniswap.getPrice({
+        from: 'wbtc',
+        to: 'dai',
+    })
     const btcEthTrade = uniswap.getTrade({
         from: 'wbtc',
         to: 'weth',

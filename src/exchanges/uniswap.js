@@ -11,30 +11,30 @@ module.exports = class Uniswap {
         const token = tokens[ticker]
 
         if (token)
-            return new Token(ChainId.MAINNET, token.address, token.decimals)
+            return new Token(ChainId[process.env.CHAIN_ID], token.address, token.decimals)
 
         throw Error(`Token ${ ticker } not found`)
     }
 
-    async getRoute(tickerA, tickerB) {
-        const tokenA = this.token(tickerA)
-        const tokenB = this.token(tickerB)
+    async getRoute({ fromToken, toToken }) {
+        const pair = await Fetcher.fetchPairData(toToken, fromToken, this.provider)
 
-        const pair = await Fetcher.fetchPairData(tokenA, tokenB, this.provider)
-        return new Route([ pair ], tokenB)
+        return new Route([ pair ], fromToken)
     }
 
-    async getPrice(tickerA, tickerB) {
-        return (await this.getRoute(tickerA, tickerB)).midPrice
+    async getPrice({ from, to }) {
+        const fromToken = this.token(from)
+        const toToken = this.token(to)
+
+        return (await this.getRoute({ fromToken, toToken })).midPrice
     }
 
-    async getTrade({ to, from, amount }) {
+    async getTrade({ from, to, amount }) {
         const toToken = this.token(to)
         const fromToken = this.token(from)
-        const convertedAmount = web3.utils.toBN(amount).mul(web3.utils.toBN(10).pow(web3.utils.toBN(fromToken.decimals)))
 
-        const pair = await Fetcher.fetchPairData(toToken, fromToken, this.provider)
-        const route = new Route([ pair ], fromToken)
+        const route = await this.getRoute({ fromToken, toToken })
+        const convertedAmount = web3.utils.toBN(amount).mul(web3.utils.toBN(10).pow(web3.utils.toBN(fromToken.decimals)))
 
         return new Trade(route, new TokenAmount(fromToken, convertedAmount), TradeType.EXACT_INPUT)
     }
